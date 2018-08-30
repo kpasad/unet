@@ -19,7 +19,7 @@ class layer_params:
         self.reg =0.1
         self.layer_cnt=0
         self.logdir='./logdir'
-        self.debug_level=1
+        self.debug_level=2
 
 def multi_conv(input,prm):
 
@@ -63,7 +63,7 @@ def up_multi_conv(down_layer,up_layer,prm):
 
     up_conv = multi_conv(concat_layer,prm)
 
-    return up_conv_prev_layer
+    return up_conv
 
 
 def make_unet_v1(X,prm):
