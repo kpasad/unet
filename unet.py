@@ -52,16 +52,17 @@ def up_multi_conv(down_layer,up_layer,prm):
                                                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(prm.reg),
                                                                 name="upsample_{}".format(prm.layer_cnt)
                                                                 )
-                if prm.debug_level == 2:
-                    up_conv_prev_layer = tf.Print(up_conv_prev_layer, [], "Up layer,    Upsampled,    down_layer,")
-                    up_conv_prev_layer = tf.Print(up_conv_prev_layer,
-                                                  [tf.shape(up_layer), tf.shape(up_conv_prev_layer), tf.shape(down_layer)])
 
             with tf.name_scope("concat_{}".format(prm.layer_cnt)):
                 concat_layer = tf.concat([up_conv_prev_layer,up_conv_prev_layer],axis=-1,name ="concat_".format(prm.layer_cnt))
 
-
     up_conv = multi_conv(concat_layer,prm)
+
+    if prm.debug_level == 2:
+        up_conv = tf.Print(up_conv, [], "Up layer,    Upsampled,    down_layer,    concat,     conv_concat ")
+        up_conv = tf.Print(up_conv,
+                           [tf.shape(up_layer), tf.shape(up_conv_prev_layer), tf.shape(down_layer),
+                            tf.shape(concat_layer), tf.shape(up_conv)])
 
     return up_conv
 
