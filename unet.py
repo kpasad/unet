@@ -20,6 +20,7 @@ class layer_params:
         self.layer_cnt=0
         self.logdir='./logdir'
         self.debug_level=2
+        self.pool=True
 
 def multi_conv(input,prm):
 
@@ -39,6 +40,8 @@ def multi_conv(input,prm):
                 with tf.name_scope("ReLu"):
                     nxt_layer_ip = tf.nn.relu(tmp, name="relu{}".format(conv_layer_cnt))
                 conv.append(nxt_layer_ip)
+        if prm.pool == False:
+            return conv[-1]
         pool = tf.layers.max_pooling2d(
                 conv[-1], (2, 2), strides=(2, 2), name="pool_{}".format(prm.layer_cnt))
         return pool
@@ -78,7 +81,7 @@ def make_unet_v1(X,prm):
         prm.layer_cnt = layer_cnt
         down_layers.append(multi_conv(next_layer_ip,prm))
         next_layer_ip = down_layers[-1]
-
+    prm.pool= False
     for layer_cnt in range(0,prm.num_down_layers-1):
         print(" Up layers",layer_cnt)
         prm.layer_cnt = layer_cnt+prm.num_down_layers
