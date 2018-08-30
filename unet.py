@@ -57,7 +57,7 @@ def up_multi_conv(down_layer,up_layer,prm):
                                                                 )
 
             with tf.name_scope("concat_{}".format(prm.layer_cnt)):
-                concat_layer = tf.concat([up_conv_prev_layer,up_conv_prev_layer],axis=-1,name ="concat_".format(prm.layer_cnt))
+                concat_layer = tf.concat([up_conv_prev_layer,down_layer],axis=-1,name ="concat_".format(prm.layer_cnt))
 
     up_conv = multi_conv(concat_layer,prm)
 
