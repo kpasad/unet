@@ -58,7 +58,7 @@ def up_multi_conv(down_layer,up_layer,prm):
                                                   [tf.shape(up_layer), tf.shape(up_conv_prev_layer), tf.shape(down_layer)])
 
             with tf.name_scope("concat_{}".format(prm.layer_cnt)):
-                concat_layer = tf.concat([up_layer,up_layer],axis=0,name ="concat_".format(prm.layer_cnt))
+                concat_layer = tf.concat([up_conv_prev_layer,up_conv_prev_layer],axis=0,name ="concat_".format(prm.layer_cnt))
 
 
     up_conv = multi_conv(concat_layer,prm)
@@ -94,7 +94,7 @@ with tf.Session() as sess:
     init = tf.global_variables_initializer()
     sess.run(init)
 
-    train_summary_writer = tf.summary.FileWriter(train_logdir, sess.graph)
+    #train_summary_writer = tf.summary.FileWriter(train_logdir, sess.graph)
 
     test_x = np.zeros((prm.batch_size, prm.ip_h, prm.ip_w, prm.n_chan),dtype=float)
     dims_up = sess.run([down_layers[1],up_layers[2]], feed_dict={ X:test_x})
